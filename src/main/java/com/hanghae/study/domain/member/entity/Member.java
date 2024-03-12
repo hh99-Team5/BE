@@ -29,8 +29,13 @@ public class Member extends Timestamped {
     private AuthorityType authority;
 
     @Builder
-    public Member(String email, String password) {
+    public Member(String email, String password, AuthorityType authority) {
         this.email = email;
+        this.password = password;
+        this.authority = authority;
+    }
+
+    public void updatePassword(String password) {
         this.password = password;
     }
 }

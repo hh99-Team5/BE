@@ -66,17 +66,17 @@ public class ArticleController {
             @PathVariable Long articleId,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        articleService.delete(articleId, userDetails.getUsername());
+        articleService.deleteArticle(articleId, userDetails.getUsername());
         return ResponseDto.success("일지 삭제 기능", null);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PostMapping("/{articleId}/likes")
-    public ResponseDto<Void> switchingLike(
+    public ResponseDto<Void> switchingArticleLike(
             @PathVariable Long articleId,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        articleLikeService.swichingLike(articleId, userDetails.getUsername());
-        return ResponseDto.success("좋아요 기능", null);
+        articleLikeService.switchingLike(articleId, userDetails.getUsername());
+        return ResponseDto.success("일지 좋아요 기능", null);
     }
 }

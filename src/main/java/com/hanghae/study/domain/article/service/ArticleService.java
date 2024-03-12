@@ -58,11 +58,7 @@ public class ArticleService {
     }
 
     @Transactional
-    public EditArticleResponseDto editArticle(
-            Long articleId,
-            String email,
-            EditArticleRequestDto requestDto
-    ) {
+    public EditArticleResponseDto editArticle(Long articleId, String email, EditArticleRequestDto requestDto) {
         Member member = memberRepository.findByEmail(email).orElseThrow(() ->
                 new CustomApiException(ErrorCode.ALREADY_EXIST_EMAIL.getMessage())
         );
@@ -78,7 +74,7 @@ public class ArticleService {
     }
 
     @Transactional
-    public void delete(Long articleId, String email) {
+    public void deleteArticle(Long articleId, String email) {
         Member member = memberRepository.findByEmail(email).orElseThrow(() ->
                 new CustomApiException(ErrorCode.ALREADY_EXIST_EMAIL.getMessage())
         );

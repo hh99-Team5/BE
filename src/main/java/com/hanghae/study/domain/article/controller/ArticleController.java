@@ -1,8 +1,7 @@
 package com.hanghae.study.domain.article.controller;
 
-import com.hanghae.study.domain.article.dto.ArticleRequestDto;
+import com.hanghae.study.domain.article.dto.ArticleRequestDto.CreateArticleRequestDto;
 import com.hanghae.study.domain.article.dto.ArticleRequestDto.UpdateArticleRequestDto;
-import com.hanghae.study.domain.article.dto.ArticleResponseDto;
 import com.hanghae.study.domain.article.dto.ArticleResponseDto.GetArticleResponseDto;
 import com.hanghae.study.domain.article.service.ArticleLikeService;
 import com.hanghae.study.domain.article.service.ArticleService;
@@ -16,7 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.hanghae.study.domain.article.dto.ArticleResponseDto.*;
+import static com.hanghae.study.domain.article.dto.ArticleResponseDto.CreateArticleResponseDto;
+import static com.hanghae.study.domain.article.dto.ArticleResponseDto.UpdateArticleResponseDto;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/articles")
@@ -26,44 +26,58 @@ public class ArticleController {
     private final ArticleService articleService;
     private final ArticleLikeService articleLikeService;
 
-    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseDto<CreateArticleResponseDto> createArticle(@RequestBody @Valid ArticleRequestDto.CreateArticleRequestDto requestDto,
-                                                               @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        CreateArticleResponseDto responseDto = articleService.createArticle(requestDto, userDetails.getUsername());
+    @PostMapping
+    public ResponseDto<CreateArticleResponseDto> createArticle(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestBody @Valid CreateArticleRequestDto requestDto
+    ) {
+        CreateArticleResponseDto responseDto = articleService.createArticle(userDetails.getUsername(), requestDto);
         return ResponseDto.success("일지 생성 기능", responseDto);
     }
 
     @GetMapping("/{articleId}")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseDto<GetArticleResponseDto> getArticle(@PathVariable Long articleId) {
+    public ResponseDto<GetArticleResponseDto> getArticle(
+            @PathVariable Long articleId
+    ) {
         GetArticleResponseDto responseDto = articleService.getArticle(articleId);
         return ResponseDto.success("일지 조회 기능", responseDto);
     }
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
     public ResponseDto<List<GetArticleResponseDto>> getArticles() {
         List<GetArticleResponseDto> responseDto = articleService.getArticles();
         return ResponseDto.success("일지 목록 조회 기능", responseDto);
     }
 
 
-    @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{articleId}")
-    public ResponseDto<UpdateArticleResponseDto> updateArticle(@PathVariable Long articleId,
-                                                               @AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                               @RequestBody @Valid UpdateArticleRequestDto requestDto) {
+    public ResponseDto<UpdateArticleResponseDto> editArticle(
+            @PathVariable Long articleId,
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestBody @Valid UpdateArticleRequestDto requestDto
+    ) {
         UpdateArticleResponseDto responseDto = articleService.updateArticle(articleId, userDetails.getUsername(), requestDto);
         return ResponseDto.success("일지 수정 기능", responseDto);
     }
 
-    @DeleteMapping("/{articleId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseDto<Void> delete(@PathVariable Long articleId,
-                                    @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    @DeleteMapping("/{articleId}")
+    public ResponseDto<Void> deleteArticle(
+            @PathVariable Long articleId,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
         articleService.delete(articleId, userDetails.getUsername());
         return ResponseDto.success("일지 삭제 기능", null);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PostMapping("/{articleId}/likes")
+    public ResponseDto<Void> switchingLike(
+            @PathVariable Long articleId,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        articleLikeService.swichingLike(articleId, userDetails.getUsername());
+        return ResponseDto.success("좋아요 기능", null);
+    }
 }

@@ -1,39 +1,39 @@
 package com.hanghae.study.domain.article.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hanghae.study.domain.article.entity.Article;
-import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 public class ArticleResponseDto {
 
-    public record CreateArticleResponseDto (
-        Long id,
-        String writer,
-        String title,
-        String contents,
-        LocalDateTime createdAt
-        ){
-
+    public record CreateArticleResponseDto(
+            Long id,
+            String writer,
+            String title,
+            String contents,
+            @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+            LocalDateTime createdAt
+    ) {
         public CreateArticleResponseDto(Article article, String email) {
             this(
                     article.getId(),
                     email,
                     article.getTitle(),
                     article.getContents(),
-                    LocalDateTime.now()
+                    article.getCreatedAt()
             );
         }
     }
 
-    public record GetArticleResponseDto (
-        Long id,
-        String writer,
-        String title,
-        String contents,
-        Long likes,
-        LocalDateTime createdAt,
-        LocalDateTime modifiedAt){
+    public record GetArticleResponseDto(
+            Long id,
+            String writer,
+            String title,
+            String contents,
+            Long likes,
+            LocalDateTime createdAt,
+            LocalDateTime modifiedAt) {
 
         public GetArticleResponseDto(Article article, Long likes) {
             this(article.getId(),
@@ -59,22 +59,22 @@ public class ArticleResponseDto {
         }
     }
 
-    public record UpdateArticleResponseDto (
-        Long id,
-        String writer,
-        String title,
-        String contents,
-        LocalDateTime createdAt,
-        LocalDateTime modifiedAt){
+    public record UpdateArticleResponseDto(
+            Long id,
+            String writer,
+            String title,
+            String contents,
+            LocalDateTime createdAt,
+            LocalDateTime modifiedAt) {
 
         public UpdateArticleResponseDto(Article article) {
             this(article.getId(),
-            article.getMember().getEmail(),
-            article.getTitle(),
-            article.getContents(),
-            article.getCreatedAt(),
-            article.getUpdatedAt()
-        );
+                    article.getMember().getEmail(),
+                    article.getTitle(),
+                    article.getContents(),
+                    article.getCreatedAt(),
+                    article.getUpdatedAt()
+            );
         }
 
 

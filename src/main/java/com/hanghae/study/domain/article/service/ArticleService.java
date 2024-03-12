@@ -1,7 +1,5 @@
 package com.hanghae.study.domain.article.service;
 
-import com.hanghae.study.domain.article.dto.ArticleRequestDto;
-import com.hanghae.study.domain.article.dto.ArticleResponseDto;
 import com.hanghae.study.domain.article.dto.ArticleResponseDto.CreateArticleResponseDto;
 import com.hanghae.study.domain.article.dto.ArticleResponseDto.GetArticleResponseDto;
 import com.hanghae.study.domain.article.dto.ArticleResponseDto.UpdateArticleResponseDto;
@@ -16,14 +14,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.hanghae.study.domain.article.dto.ArticleRequestDto.*;
+import static com.hanghae.study.domain.article.dto.ArticleRequestDto.CreateArticleRequestDto;
+import static com.hanghae.study.domain.article.dto.ArticleRequestDto.UpdateArticleRequestDto;
 
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 @Service
 public class ArticleService {
 
@@ -32,14 +30,15 @@ public class ArticleService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public CreateArticleResponseDto createArticle(CreateArticleRequestDto requestDto, String email) {
-        Member member = memberRepository.findByEmail(email).orElseThrow(()
-                -> new CustomApiException(ErrorCode.ALREADY_EXIST_EMAIL.getMessage()));
+    public CreateArticleResponseDto createArticle(String email, CreateArticleRequestDto requestDto) {
+        Member member = memberRepository.findByEmail(email).orElseThrow(() ->
+                new CustomApiException(ErrorCode.ALREADY_EXIST_EMAIL.getMessage())
+        );
+
         Article article = articleRepository.save(requestDto.toEntity(member));
-        return new CreateArticleResponseDto(article,email);
+        return new CreateArticleResponseDto(article, member.getEmail());
     }
 
-    @Transactional(readOnly = true)
     public GetArticleResponseDto getArticle(Long articleId) {
         Article article = articleRepository.findById(articleId).orElseThrow(
                 () -> new CustomApiException(ErrorCode.NOT_FOUND_ARTICLE.getMessage())
@@ -48,7 +47,6 @@ public class ArticleService {
         return new GetArticleResponseDto(article, likes);
     }
 
-    @Transactional(readOnly = true)
     public List<GetArticleResponseDto> getArticles() {
         List<Article> articleList = articleRepository.findAll();
 
@@ -66,7 +64,7 @@ public class ArticleService {
                 -> new CustomApiException(ErrorCode.ALREADY_EXIST_EMAIL.getMessage()));
         Article article = articleRepository.findById(articleId).orElseThrow(()
                 -> new CustomApiException(ErrorCode.NOT_FOUND_ARTICLE.getMessage()));
-        if(article.getMember() != member){
+        if (article.getMember() != member) {
             throw new CustomApiException(ErrorCode.ARTICLE_NOT_MATCH_MEMBER.getMessage());
         }
         article.update(requestDto.title(), requestDto.contents());

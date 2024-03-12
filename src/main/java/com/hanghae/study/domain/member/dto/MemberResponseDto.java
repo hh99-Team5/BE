@@ -19,4 +19,14 @@ public class MemberResponseDto {
             );
         }
     }
+
+    public record MemberSigninResponseDto(
+            Long id
+    ) {
+        public MemberSigninResponseDto(Member member) {
+            this(
+                    member.getId()
+            );
+        }
+    }
 }

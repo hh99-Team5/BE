@@ -7,6 +7,7 @@ import com.hanghae.study.domain.member.repository.MemberRepository;
 import com.hanghae.study.global.exception.CustomApiException;
 import com.hanghae.study.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public MemberSignupResponseDto signup(MemberSignupRequestDto requestDto) {
@@ -23,7 +25,8 @@ public class MemberService {
             throw new CustomApiException(ErrorCode.ALREADY_EXIST_EMAIL.getMessage());
         }
 
-        Member member = memberRepository.save(requestDto.toEntity());
+        String encodedPassword = passwordEncoder.encode(requestDto.password());
+        Member member = memberRepository.save(requestDto.toEntity(encodedPassword));
         return new MemberSignupResponseDto(member);
     }
 }

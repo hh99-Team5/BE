@@ -1,7 +1,6 @@
 package com.hanghae.study.domain.article.controller;
 
-import com.hanghae.study.domain.article.dto.ArticleRequestDto.CreateArticleRequestDto;
-import com.hanghae.study.domain.article.dto.ArticleRequestDto.UpdateArticleRequestDto;
+import com.hanghae.study.domain.article.dto.ArticleRequestDto;
 import com.hanghae.study.domain.article.dto.ArticleResponseDto.GetArticleResponseDto;
 import com.hanghae.study.domain.article.service.ArticleLikeService;
 import com.hanghae.study.domain.article.service.ArticleService;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static com.hanghae.study.domain.article.dto.ArticleResponseDto.CreateArticleResponseDto;
-import static com.hanghae.study.domain.article.dto.ArticleResponseDto.UpdateArticleResponseDto;
+import static com.hanghae.study.domain.article.dto.ArticleResponseDto.EditArticleResponseDto;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/articles")
@@ -30,7 +29,7 @@ public class ArticleController {
     @PostMapping
     public ResponseDto<CreateArticleResponseDto> createArticle(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @RequestBody @Valid CreateArticleRequestDto requestDto
+            @RequestBody @Valid ArticleRequestDto.CreateArticleRequestDto requestDto
     ) {
         CreateArticleResponseDto responseDto = articleService.createArticle(userDetails.getUsername(), requestDto);
         return ResponseDto.success("일지 생성 기능", responseDto);
@@ -52,12 +51,12 @@ public class ArticleController {
 
 
     @PutMapping("/{articleId}")
-    public ResponseDto<UpdateArticleResponseDto> editArticle(
+    public ResponseDto<EditArticleResponseDto> editArticle(
             @PathVariable Long articleId,
             @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @RequestBody @Valid UpdateArticleRequestDto requestDto
+            @RequestBody @Valid ArticleRequestDto.EditArticleRequestDto requestDto
     ) {
-        UpdateArticleResponseDto responseDto = articleService.updateArticle(articleId, userDetails.getUsername(), requestDto);
+        EditArticleResponseDto responseDto = articleService.editArticle(articleId, userDetails.getUsername(), requestDto);
         return ResponseDto.success("일지 수정 기능", responseDto);
     }
 

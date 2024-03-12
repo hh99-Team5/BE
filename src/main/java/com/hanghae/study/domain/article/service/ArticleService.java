@@ -1,8 +1,8 @@
 package com.hanghae.study.domain.article.service;
 
 import com.hanghae.study.domain.article.dto.ArticleResponseDto.CreateArticleResponseDto;
+import com.hanghae.study.domain.article.dto.ArticleResponseDto.EditArticleResponseDto;
 import com.hanghae.study.domain.article.dto.ArticleResponseDto.GetArticleResponseDto;
-import com.hanghae.study.domain.article.dto.ArticleResponseDto.UpdateArticleResponseDto;
 import com.hanghae.study.domain.article.entity.Article;
 import com.hanghae.study.domain.article.repository.ArticleLikeRepository;
 import com.hanghae.study.domain.article.repository.ArticleRepository;
@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static com.hanghae.study.domain.article.dto.ArticleRequestDto.CreateArticleRequestDto;
-import static com.hanghae.study.domain.article.dto.ArticleRequestDto.UpdateArticleRequestDto;
+import static com.hanghae.study.domain.article.dto.ArticleRequestDto.EditArticleRequestDto;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -58,18 +58,23 @@ public class ArticleService {
     }
 
     @Transactional
-    public UpdateArticleResponseDto updateArticle(Long articleId,
-                                                  String email,
-                                                  UpdateArticleRequestDto requestDto) {
-        Member member = memberRepository.findByEmail(email).orElseThrow(()
-                -> new CustomApiException(ErrorCode.ALREADY_EXIST_EMAIL.getMessage()));
-        Article article = articleRepository.findById(articleId).orElseThrow(()
-                -> new CustomApiException(ErrorCode.NOT_FOUND_ARTICLE.getMessage()));
+    public EditArticleResponseDto editArticle(
+            Long articleId,
+            String email,
+            EditArticleRequestDto requestDto
+    ) {
+        Member member = memberRepository.findByEmail(email).orElseThrow(() ->
+                new CustomApiException(ErrorCode.ALREADY_EXIST_EMAIL.getMessage())
+        );
+        Article article = articleRepository.findById(articleId).orElseThrow(() ->
+                new CustomApiException(ErrorCode.NOT_FOUND_ARTICLE.getMessage())
+        );
         if (article.getMember() != member) {
-            throw new CustomApiException(ErrorCode.ARTICLE_NOT_MATCH_MEMBER.getMessage());
+            throw new CustomApiException(ErrorCode.NOT_MATCH_ARTICLE_MEMBER.getMessage());
         }
+
         article.update(requestDto.title(), requestDto.contents());
-        return new UpdateArticleResponseDto(article);
+        return new EditArticleResponseDto(article);
     }
 
     @Transactional

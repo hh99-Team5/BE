@@ -23,7 +23,7 @@ public class ArticleRequestDto {
         }
     }
 
-    public record UpdateArticleRequestDto(
+    public record EditArticleRequestDto(
             @NotBlank(message = "제목을 입력해 주세요.")
             String title,
 

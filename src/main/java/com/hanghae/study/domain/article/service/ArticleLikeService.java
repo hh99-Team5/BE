@@ -44,7 +44,7 @@ public class ArticleLikeService {
                 return false;
             }
         } else {
-            throw new CustomApiException(ErrorCode.ARTICLE_NOT_MATCH_MEMBER.getMessage());
+            throw new CustomApiException(ErrorCode.NOT_MATCH_ARTICLE_MEMBER.getMessage());
         }
 
     }

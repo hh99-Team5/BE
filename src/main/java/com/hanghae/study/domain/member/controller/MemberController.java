@@ -1,12 +1,10 @@
 package com.hanghae.study.domain.member.controller;
 
 import com.hanghae.study.domain.member.controller.docs.MemberControllerDocs;
-import com.hanghae.study.domain.member.dto.MemberRequestDto.MemberCheckEmailRequestDto;
-import com.hanghae.study.domain.member.dto.MemberRequestDto.MemberSignupRequestDto;
-import com.hanghae.study.domain.member.dto.MemberRequestDto.MemberUpdateRequestDto;
-import com.hanghae.study.domain.member.dto.MemberResponseDto.MemberCheckEmailResponseDto;
-import com.hanghae.study.domain.member.dto.MemberResponseDto.MemberSignupResponseDto;
-import com.hanghae.study.domain.member.dto.MemberResponseDto.MemberUpdateResponseDto;
+import com.hanghae.study.domain.member.dto.MemberRequestDto;
+import com.hanghae.study.domain.member.dto.MemberResponseDto.CheckMemberEmailResponseDto;
+import com.hanghae.study.domain.member.dto.MemberResponseDto.EditMemberResponseDto;
+import com.hanghae.study.domain.member.dto.MemberResponseDto.SignupMemberResponseDto;
 import com.hanghae.study.domain.member.service.MemberService;
 import com.hanghae.study.global.dto.ResponseDto;
 import com.hanghae.study.global.security.UserDetailsImpl;
@@ -25,27 +23,27 @@ public class MemberController implements MemberControllerDocs {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/signup")
-    public ResponseDto<MemberSignupResponseDto> signup(
-            @RequestBody @Valid MemberSignupRequestDto requestDto
+    public ResponseDto<SignupMemberResponseDto> signup(
+            @RequestBody @Valid MemberRequestDto.SignupMemberRequestDto requestDto
     ) {
-        MemberSignupResponseDto responseDto = memberService.signup(requestDto);
+        SignupMemberResponseDto responseDto = memberService.signup(requestDto);
         return ResponseDto.success("회원가입 기능", responseDto);
     }
 
     @PutMapping
-    public ResponseDto<MemberUpdateResponseDto> editMember(
+    public ResponseDto<EditMemberResponseDto> editMember(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @RequestBody @Valid MemberUpdateRequestDto requestDto
+            @RequestBody @Valid MemberRequestDto.EditMemberRequestDto requestDto
     ) {
-        MemberUpdateResponseDto responseDto = memberService.editMember(userDetails.getUsername(), requestDto);
+        EditMemberResponseDto responseDto = memberService.editMember(userDetails.getUsername(), requestDto);
         return ResponseDto.success("회원 정보 수정 기능", responseDto);
     }
 
     @GetMapping("/check-email")
-    public ResponseDto<MemberCheckEmailResponseDto> checkEmail(
+    public ResponseDto<CheckMemberEmailResponseDto> checkEmail(
             @RequestParam String email
     ) {
-        MemberCheckEmailResponseDto responseDto = memberService.checkEmail(email);
+        CheckMemberEmailResponseDto responseDto = memberService.checkEmail(email);
         return ResponseDto.success("회원 이메일 중복 검사", responseDto);
     }
 }

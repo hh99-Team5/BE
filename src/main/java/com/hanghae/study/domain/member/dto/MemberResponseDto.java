@@ -7,12 +7,12 @@ import java.time.LocalDateTime;
 
 public class MemberResponseDto {
 
-    public record MemberSignupResponseDto(
+    public record SignupMemberResponseDto(
             String email,
             @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
             LocalDateTime createdAt
     ) {
-        public MemberSignupResponseDto(Member member) {
+        public SignupMemberResponseDto(Member member) {
             this(
                     member.getEmail(),
                     member.getCreatedAt()
@@ -20,28 +20,29 @@ public class MemberResponseDto {
         }
     }
 
-    public record MemberSigninResponseDto(
+    public record SigninMemberResponseDto(
             Long id
     ) {
-        public MemberSigninResponseDto(Member member) {
+        public SigninMemberResponseDto(Member member) {
             this(
                     member.getId()
             );
         }
     }
 
-    public record MemberUpdateResponseDto(
+    public record EditMemberResponseDto(
             Long id
     ) {
-        public MemberUpdateResponseDto(Member member) {
+        public EditMemberResponseDto(Member member) {
             this(
                     member.getId()
             );
         }
     }
 
-    public record MemberCheckEmailResponseDto(
+    public record CheckMemberEmailResponseDto(
             Boolean isExist
     ) {
+
     }
 }

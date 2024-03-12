@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public class MemberRequestDto {
 
-    public record MemberSignupRequestDto(
+    public record SignupMemberRequestDto(
             @Schema(description = "이메일", example = "test@test.com")
             @NotBlank(message = "이메일을 입력해주세요.")
             @Email(message = "이메일 형식이 아닙니다.")
@@ -27,7 +27,7 @@ public class MemberRequestDto {
         }
     }
 
-    public record MemberSigninRequestDto(
+    public record SigninMemberRequestDto(
             @Schema(description = "이메일", example = "test@test.com")
             @NotBlank(message = "이메일을 입력해주세요.")
             @Email(message = "이메일 형식이 아닙니다.")
@@ -40,19 +40,10 @@ public class MemberRequestDto {
 
     }
 
-    public record MemberUpdateRequestDto(
+    public record EditMemberRequestDto(
             @Schema(description = "비밀번호", example = "password123!")
             @NotBlank(message = "변경할 비밀번호를 입력해주세요.")
             String password
-    ) {
-
-    }
-
-    public record MemberCheckEmailRequestDto(
-            @Schema(description = "이메일", example = "test@test.com")
-            @NotBlank(message = "이메일을 입력해주세요.")
-            @Email(message = "이메일 형식이 아닙니다.")
-            String email
     ) {
 
     }

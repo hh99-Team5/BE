@@ -1,11 +1,10 @@
 package com.hanghae.study.domain.member.service;
 
-import com.hanghae.study.domain.member.dto.MemberRequestDto.MemberCheckEmailRequestDto;
-import com.hanghae.study.domain.member.dto.MemberRequestDto.MemberSignupRequestDto;
-import com.hanghae.study.domain.member.dto.MemberRequestDto.MemberUpdateRequestDto;
-import com.hanghae.study.domain.member.dto.MemberResponseDto.MemberCheckEmailResponseDto;
-import com.hanghae.study.domain.member.dto.MemberResponseDto.MemberSignupResponseDto;
-import com.hanghae.study.domain.member.dto.MemberResponseDto.MemberUpdateResponseDto;
+import com.hanghae.study.domain.member.dto.MemberRequestDto.EditMemberRequestDto;
+import com.hanghae.study.domain.member.dto.MemberRequestDto.SignupMemberRequestDto;
+import com.hanghae.study.domain.member.dto.MemberResponseDto.CheckMemberEmailResponseDto;
+import com.hanghae.study.domain.member.dto.MemberResponseDto.EditMemberResponseDto;
+import com.hanghae.study.domain.member.dto.MemberResponseDto.SignupMemberResponseDto;
 import com.hanghae.study.domain.member.entity.Member;
 import com.hanghae.study.domain.member.repository.MemberRepository;
 import com.hanghae.study.global.exception.CustomApiException;
@@ -24,27 +23,27 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public MemberSignupResponseDto signup(MemberSignupRequestDto requestDto) {
+    public SignupMemberResponseDto signup(SignupMemberRequestDto requestDto) {
         if (memberRepository.existsByEmail(requestDto.email())) {
             throw new CustomApiException(ErrorCode.ALREADY_EXIST_EMAIL.getMessage());
         }
 
         String encodedPassword = passwordEncoder.encode(requestDto.password());
         Member member = memberRepository.save(requestDto.toEntity(encodedPassword));
-        return new MemberSignupResponseDto(member);
+        return new SignupMemberResponseDto(member);
     }
 
     @Transactional
-    public MemberUpdateResponseDto editMember(String email, MemberUpdateRequestDto requestDto) {
+    public EditMemberResponseDto editMember(String email, EditMemberRequestDto requestDto) {
         Member member = memberRepository.findByEmail(email).orElseThrow(() ->
                 new CustomApiException(ErrorCode.NOT_FOUND_MEMBER.getMessage())
         );
 
         member.updatePassword(passwordEncoder.encode(requestDto.password()));
-        return new MemberUpdateResponseDto(member);
+        return new EditMemberResponseDto(member);
     }
 
-    public MemberCheckEmailResponseDto checkEmail(String email) {
-        return new MemberCheckEmailResponseDto(memberRepository.existsByEmail(email));
+    public CheckMemberEmailResponseDto checkEmail(String email) {
+        return new CheckMemberEmailResponseDto(memberRepository.existsByEmail(email));
     }
 }

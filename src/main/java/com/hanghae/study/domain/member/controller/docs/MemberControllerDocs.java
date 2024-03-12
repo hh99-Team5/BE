@@ -1,10 +1,9 @@
 package com.hanghae.study.domain.member.controller.docs;
 
-import com.hanghae.study.domain.member.dto.MemberRequestDto.MemberSignupRequestDto;
-import com.hanghae.study.domain.member.dto.MemberRequestDto.MemberUpdateRequestDto;
-import com.hanghae.study.domain.member.dto.MemberResponseDto.MemberCheckEmailResponseDto;
-import com.hanghae.study.domain.member.dto.MemberResponseDto.MemberSignupResponseDto;
-import com.hanghae.study.domain.member.dto.MemberResponseDto.MemberUpdateResponseDto;
+import com.hanghae.study.domain.member.dto.MemberRequestDto;
+import com.hanghae.study.domain.member.dto.MemberResponseDto.CheckMemberEmailResponseDto;
+import com.hanghae.study.domain.member.dto.MemberResponseDto.EditMemberResponseDto;
+import com.hanghae.study.domain.member.dto.MemberResponseDto.SignupMemberResponseDto;
 import com.hanghae.study.global.dto.ResponseDto;
 import com.hanghae.study.global.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,18 +17,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface MemberControllerDocs {
 
     @Operation(summary = "회원 가입 기능", description = "회원 가입할 수 있는 API")
-    ResponseDto<MemberSignupResponseDto> signup(
-            @RequestBody @Valid MemberSignupRequestDto requestDto
+    ResponseDto<SignupMemberResponseDto> signup(
+            @RequestBody @Valid MemberRequestDto.SignupMemberRequestDto requestDto
     );
 
     @Operation(summary = "회원 정보 수정 기능", description = "회원 정보를 수정할 수 있는 API")
-    ResponseDto<MemberUpdateResponseDto> editMember(
+    ResponseDto<EditMemberResponseDto> editMember(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @RequestBody @Valid MemberUpdateRequestDto requestDto
+            @RequestBody @Valid MemberRequestDto.EditMemberRequestDto requestDto
     );
 
     @Operation(summary = "회원 이메일 중복 검사 기능", description = "가입된 회원 이메일을 중복 검사할 수 있는 API")
-    ResponseDto<MemberCheckEmailResponseDto> checkEmail(
+    ResponseDto<CheckMemberEmailResponseDto> checkEmail(
             @RequestParam String email
     );
 }

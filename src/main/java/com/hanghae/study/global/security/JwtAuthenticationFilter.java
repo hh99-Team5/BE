@@ -1,8 +1,8 @@
 package com.hanghae.study.global.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hanghae.study.domain.member.dto.MemberRequestDto.MemberSigninRequestDto;
-import com.hanghae.study.domain.member.dto.MemberResponseDto.MemberSigninResponseDto;
+import com.hanghae.study.domain.member.dto.MemberRequestDto.SigninMemberRequestDto;
+import com.hanghae.study.domain.member.dto.MemberResponseDto.SigninMemberResponseDto;
 import com.hanghae.study.domain.member.entity.type.AuthorityType;
 import com.hanghae.study.global.jwt.JwtUtil;
 import com.hanghae.study.global.util.CustomResponseUtil;
@@ -31,7 +31,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
-            MemberSigninRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(), MemberSigninRequestDto.class);
+            SigninMemberRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(), SigninMemberRequestDto.class);
 
             return getAuthenticationManager().authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -55,7 +55,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authResult.getPrincipal();
-        MemberSigninResponseDto responseDto = new MemberSigninResponseDto(userDetails.getMember());
+        SigninMemberResponseDto responseDto = new SigninMemberResponseDto(userDetails.getMember());
         CustomResponseUtil.success(response, responseDto);
     }
 

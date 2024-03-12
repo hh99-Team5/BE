@@ -10,6 +10,7 @@ public class MemberRequestDto {
 
     public record MemberSignupRequestDto(
             @Schema(description = "이메일", example = "test@test.com")
+            @NotBlank(message = "이메일을 입력해주세요.")
             @Email(message = "이메일 형식이 아닙니다.")
             String email,
 
@@ -28,6 +29,7 @@ public class MemberRequestDto {
 
     public record MemberSigninRequestDto(
             @Schema(description = "이메일", example = "test@test.com")
+            @NotBlank(message = "이메일을 입력해주세요.")
             @Email(message = "이메일 형식이 아닙니다.")
             String username,
 
@@ -42,6 +44,15 @@ public class MemberRequestDto {
             @Schema(description = "비밀번호", example = "password123!")
             @NotBlank(message = "변경할 비밀번호를 입력해주세요.")
             String password
+    ) {
+
+    }
+
+    public record MemberCheckEmailRequestDto(
+            @Schema(description = "이메일", example = "test@test.com")
+            @NotBlank(message = "이메일을 입력해주세요.")
+            @Email(message = "이메일 형식이 아닙니다.")
+            String email
     ) {
 
     }

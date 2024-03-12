@@ -1,8 +1,10 @@
 package com.hanghae.study.domain.member.controller;
 
 import com.hanghae.study.domain.member.controller.docs.MemberControllerDocs;
+import com.hanghae.study.domain.member.dto.MemberRequestDto.MemberCheckEmailRequestDto;
 import com.hanghae.study.domain.member.dto.MemberRequestDto.MemberSignupRequestDto;
 import com.hanghae.study.domain.member.dto.MemberRequestDto.MemberUpdateRequestDto;
+import com.hanghae.study.domain.member.dto.MemberResponseDto.MemberCheckEmailResponseDto;
 import com.hanghae.study.domain.member.dto.MemberResponseDto.MemberSignupResponseDto;
 import com.hanghae.study.domain.member.dto.MemberResponseDto.MemberUpdateResponseDto;
 import com.hanghae.study.domain.member.service.MemberService;
@@ -37,5 +39,13 @@ public class MemberController implements MemberControllerDocs {
     ) {
         MemberUpdateResponseDto responseDto = memberService.editMember(userDetails.getUsername(), requestDto);
         return ResponseDto.success("회원 정보 수정 기능", responseDto);
+    }
+
+    @GetMapping("/check-email")
+    public ResponseDto<MemberCheckEmailResponseDto> checkEmail(
+            @RequestBody @Valid MemberCheckEmailRequestDto requestDto
+    ) {
+        MemberCheckEmailResponseDto responseDto = memberService.checkEmail(requestDto);
+        return ResponseDto.success("회원 이메일 중복 검사", responseDto);
     }
 }

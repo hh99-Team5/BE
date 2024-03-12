@@ -1,7 +1,9 @@
 package com.hanghae.study.domain.member.service;
 
+import com.hanghae.study.domain.member.dto.MemberRequestDto.MemberCheckEmailRequestDto;
 import com.hanghae.study.domain.member.dto.MemberRequestDto.MemberSignupRequestDto;
 import com.hanghae.study.domain.member.dto.MemberRequestDto.MemberUpdateRequestDto;
+import com.hanghae.study.domain.member.dto.MemberResponseDto.MemberCheckEmailResponseDto;
 import com.hanghae.study.domain.member.dto.MemberResponseDto.MemberSignupResponseDto;
 import com.hanghae.study.domain.member.dto.MemberResponseDto.MemberUpdateResponseDto;
 import com.hanghae.study.domain.member.entity.Member;
@@ -40,5 +42,9 @@ public class MemberService {
 
         member.updatePassword(passwordEncoder.encode(requestDto.password()));
         return new MemberUpdateResponseDto(member);
+    }
+
+    public MemberCheckEmailResponseDto checkEmail(MemberCheckEmailRequestDto requestDto) {
+        return new MemberCheckEmailResponseDto(memberRepository.existsByEmail(requestDto.email()));
     }
 }

@@ -1,5 +1,6 @@
 package com.hanghae.study.domain.article.controller;
 
+import com.hanghae.study.domain.article.controller.docs.ArticleControllerDocs;
 import com.hanghae.study.domain.article.dto.ArticleRequestDto;
 import com.hanghae.study.domain.article.dto.ArticleResponseDto.GetArticleResponseDto;
 import com.hanghae.study.domain.article.service.ArticleLikeService;
@@ -20,7 +21,7 @@ import static com.hanghae.study.domain.article.dto.ArticleResponseDto.EditArticl
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/articles")
 @RestController
-public class ArticleController {
+public class ArticleController implements ArticleControllerDocs {
 
     private final ArticleService articleService;
     private final ArticleLikeService articleLikeService;

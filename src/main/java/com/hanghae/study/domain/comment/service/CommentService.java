@@ -3,7 +3,9 @@ package com.hanghae.study.domain.comment.service;
 import com.hanghae.study.domain.article.entity.Article;
 import com.hanghae.study.domain.article.repository.ArticleRepository;
 import com.hanghae.study.domain.comment.dto.CommentRequestDto.CreateCommentRequestDto;
+import com.hanghae.study.domain.comment.dto.CommentRequestDto.EditCommentRequestDto;
 import com.hanghae.study.domain.comment.dto.CommentResponseDto.CreateCommentResponseDto;
+import com.hanghae.study.domain.comment.dto.CommentResponseDto.EditCommentResponseDto;
 import com.hanghae.study.domain.comment.dto.CommentResponseDto.GetCommentResponseDto;
 import com.hanghae.study.domain.comment.entity.Comment;
 import com.hanghae.study.domain.comment.repository.CommentRepository;
@@ -47,5 +49,21 @@ public class CommentService {
         return commentRepository.findAllByArticle(article).stream()
                 .map(GetCommentResponseDto::new)
                 .toList();
+    }
+
+    @Transactional
+    public EditCommentResponseDto editComment(Long commentId, String email, EditCommentRequestDto requestDto) {
+        Member member = memberRepository.findByEmail(email).orElseThrow(() ->
+                new CustomApiException(ErrorCode.NOT_FOUND_MEMBER.getMessage())
+        );
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() ->
+                new CustomApiException(ErrorCode.NOT_FOUND_COMMENT.getMessage())
+        );
+        if (!comment.getMember().equals(member)) {
+            throw new CustomApiException(ErrorCode.NOT_MATCH_COMMENT_MEMBER.getMessage());
+        }
+
+        comment.update(requestDto.contents());
+        return new EditCommentResponseDto(comment);
     }
 }

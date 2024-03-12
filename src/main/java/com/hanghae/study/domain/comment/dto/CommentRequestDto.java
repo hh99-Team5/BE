@@ -19,4 +19,10 @@ public class CommentRequestDto {
                     .build();
         }
     }
+
+    public record EditCommentRequestDto(
+            String contents
+    ) {
+
+    }
 }

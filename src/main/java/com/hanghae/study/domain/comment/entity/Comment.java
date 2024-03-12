@@ -8,11 +8,13 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
 @Table(name = "comment_tbl")
+@DynamicUpdate
 public class Comment extends Timestamped {
 
     @Id
@@ -35,5 +37,11 @@ public class Comment extends Timestamped {
         this.contents = contents;
         this.member = member;
         this.article = article;
+    }
+
+    public void update(String contents) {
+        if (contents != null) {
+            this.contents = contents;
+        }
     }
 }

@@ -44,4 +44,16 @@ public class CommentResponseDto {
             );
         }
     }
+
+    public record EditCommentResponseDto(
+            Long id,
+            String contents
+    ) {
+        public EditCommentResponseDto(Comment comment) {
+            this(
+                    comment.getId(),
+                    comment.getContents()
+            );
+        }
+    }
 }

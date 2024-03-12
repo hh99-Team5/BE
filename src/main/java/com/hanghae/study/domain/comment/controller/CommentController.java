@@ -1,7 +1,9 @@
 package com.hanghae.study.domain.comment.controller;
 
 import com.hanghae.study.domain.comment.dto.CommentRequestDto.CreateCommentRequestDto;
+import com.hanghae.study.domain.comment.dto.CommentRequestDto.EditCommentRequestDto;
 import com.hanghae.study.domain.comment.dto.CommentResponseDto.CreateCommentResponseDto;
+import com.hanghae.study.domain.comment.dto.CommentResponseDto.EditCommentResponseDto;
 import com.hanghae.study.domain.comment.dto.CommentResponseDto.GetCommentResponseDto;
 import com.hanghae.study.domain.comment.service.CommentService;
 import com.hanghae.study.global.dto.ResponseDto;
@@ -38,5 +40,15 @@ public class CommentController {
     ) {
         List<GetCommentResponseDto> responseDto = commentService.getComments(articleId);
         return ResponseDto.success("댓글 목록 조회 기능", responseDto);
+    }
+
+    @PutMapping("/comments/{commentId}")
+    public ResponseDto<EditCommentResponseDto> editComment(
+            @PathVariable Long commentId,
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestBody @Valid EditCommentRequestDto requestDto
+    ) {
+        EditCommentResponseDto responseDto = commentService.editComment(commentId, userDetails.getUsername(), requestDto);
+        return ResponseDto.success("댓글 수정 기능", responseDto);
     }
 }

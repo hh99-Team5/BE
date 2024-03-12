@@ -1,6 +1,5 @@
 package com.hanghae.study.domain.member.service;
 
-import com.hanghae.study.domain.member.dto.MemberRequestDto.MemberCheckEmailRequestDto;
 import com.hanghae.study.domain.member.dto.MemberRequestDto.MemberSignupRequestDto;
 import com.hanghae.study.domain.member.dto.MemberRequestDto.MemberUpdateRequestDto;
 import com.hanghae.study.domain.member.dto.MemberResponseDto.MemberCheckEmailResponseDto;
@@ -44,7 +43,7 @@ public class MemberService {
         return new MemberUpdateResponseDto(member);
     }
 
-    public MemberCheckEmailResponseDto checkEmail(MemberCheckEmailRequestDto requestDto) {
-        return new MemberCheckEmailResponseDto(memberRepository.existsByEmail(requestDto.email()));
+    public MemberCheckEmailResponseDto checkEmail(String email) {
+        return new MemberCheckEmailResponseDto(memberRepository.existsByEmail(email));
     }
 }

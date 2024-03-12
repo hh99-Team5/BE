@@ -66,4 +66,19 @@ public class CommentService {
         comment.update(requestDto.contents());
         return new EditCommentResponseDto(comment);
     }
+
+    @Transactional
+    public void deleteComment(Long commentId, String email) {
+        Member member = memberRepository.findByEmail(email).orElseThrow(() ->
+                new CustomApiException(ErrorCode.NOT_FOUND_MEMBER.getMessage())
+        );
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() ->
+                new CustomApiException(ErrorCode.NOT_FOUND_COMMENT.getMessage())
+        );
+        if (!comment.getMember().equals(member)) {
+            throw new CustomApiException(ErrorCode.NOT_MATCH_COMMENT_MEMBER.getMessage());
+        }
+
+        commentRepository.delete(comment);
+    }
 }

@@ -51,4 +51,14 @@ public class CommentController {
         EditCommentResponseDto responseDto = commentService.editComment(commentId, userDetails.getUsername(), requestDto);
         return ResponseDto.success("댓글 수정 기능", responseDto);
     }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/comments/{commentId}")
+    public ResponseDto<Void> deleteComment(
+            @PathVariable Long commentId,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        commentService.deleteComment(commentId, userDetails.getUsername());
+        return ResponseDto.success("댓글 삭제 기능", null);
+    }
 }

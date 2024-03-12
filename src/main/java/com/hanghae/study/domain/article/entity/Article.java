@@ -1,5 +1,6 @@
 package com.hanghae.study.domain.article.entity;
 
+import com.hanghae.study.domain.comment.entity.Comment;
 import com.hanghae.study.domain.member.entity.Member;
 import com.hanghae.study.global.entity.Timestamped;
 import jakarta.persistence.*;
@@ -11,6 +12,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -38,8 +40,8 @@ public class Article extends Timestamped {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "article")
-    private List<ArticleLike> likes;
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+    private final List<Comment> comments = new ArrayList<>();
 
     @Builder
     public Article(String title, String contents, boolean deleted, Member member) {
@@ -56,9 +58,5 @@ public class Article extends Timestamped {
         if (contents != null) {
             this.contents = contents;
         }
-    }
-
-    public Long getLikesCount() {
-        return likes != null ? (long) likes.size() : 0L;
     }
 }

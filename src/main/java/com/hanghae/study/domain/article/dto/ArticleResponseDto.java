@@ -2,8 +2,10 @@ package com.hanghae.study.domain.article.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hanghae.study.domain.article.entity.Article;
+import com.hanghae.study.domain.comment.dto.CommentResponseDto.GetCommentResponseDto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class ArticleResponseDto {
 
@@ -38,7 +40,9 @@ public class ArticleResponseDto {
             LocalDateTime createdAt,
 
             @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-            LocalDateTime updatedAt
+            LocalDateTime updatedAt,
+
+            List<GetCommentResponseDto> comments
     ) {
         public GetArticleResponseDto(Article article, Long like) {
             this(
@@ -48,7 +52,8 @@ public class ArticleResponseDto {
                     article.getContents(),
                     like,
                     article.getCreatedAt(),
-                    article.getUpdatedAt()
+                    article.getUpdatedAt(),
+                    GetCommentResponseDto.listOf(article.getComments())
             );
         }
     }

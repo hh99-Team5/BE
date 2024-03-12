@@ -39,7 +39,7 @@ public class MemberController implements MemberControllerDocs {
         return ResponseDto.success("회원 정보 수정 기능", responseDto);
     }
 
-    @GetMapping("/check-email")
+    @GetMapping("/email-check")
     public ResponseDto<CheckMemberEmailResponseDto> checkEmail(
             @RequestParam String email
     ) {

@@ -39,4 +39,9 @@ public class MemberResponseDto {
             );
         }
     }
+
+    public record MemberCheckEmailResponseDto(
+            Boolean isExist
+    ) {
+    }
 }

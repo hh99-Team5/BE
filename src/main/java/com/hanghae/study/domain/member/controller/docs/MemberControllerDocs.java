@@ -1,6 +1,5 @@
 package com.hanghae.study.domain.member.controller.docs;
 
-import com.hanghae.study.domain.member.dto.MemberRequestDto.MemberCheckEmailRequestDto;
 import com.hanghae.study.domain.member.dto.MemberRequestDto.MemberSignupRequestDto;
 import com.hanghae.study.domain.member.dto.MemberRequestDto.MemberUpdateRequestDto;
 import com.hanghae.study.domain.member.dto.MemberResponseDto.MemberCheckEmailResponseDto;
@@ -13,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Tag(name = "members", description = "회원 관련 API")
 public interface MemberControllerDocs {
@@ -30,6 +30,6 @@ public interface MemberControllerDocs {
 
     @Operation(summary = "회원 이메일 중복 검사 기능", description = "가입된 회원 이메일을 중복 검사할 수 있는 API")
     ResponseDto<MemberCheckEmailResponseDto> checkEmail(
-            @RequestBody @Valid MemberCheckEmailRequestDto requestDto
+            @RequestParam String email
     );
 }

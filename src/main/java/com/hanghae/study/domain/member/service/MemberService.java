@@ -44,7 +44,7 @@ public class MemberService {
         return new MemberUpdateResponseDto(member);
     }
 
-    public MemberCheckEmailResponseDto checkEmail(MemberCheckEmailRequestDto requestDto) {
-        return new MemberCheckEmailResponseDto(memberRepository.existsByEmail(requestDto.email()));
+    public MemberCheckEmailResponseDto checkEmail(String email) {
+        return new MemberCheckEmailResponseDto(memberRepository.existsByEmail(email));
     }
 }

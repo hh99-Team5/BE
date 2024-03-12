@@ -1,5 +1,6 @@
 package com.hanghae.study.domain.comment.controller;
 
+import com.hanghae.study.domain.comment.controller.docs.CommentControllerDocs;
 import com.hanghae.study.domain.comment.dto.CommentRequestDto.CreateCommentRequestDto;
 import com.hanghae.study.domain.comment.dto.CommentRequestDto.EditCommentRequestDto;
 import com.hanghae.study.domain.comment.dto.CommentResponseDto.CreateCommentResponseDto;
@@ -19,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
 @RestController
-public class CommentController {
+public class CommentController implements CommentControllerDocs {
 
     private final CommentService commentService;
 

@@ -8,6 +8,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
@@ -28,10 +31,29 @@ public class Article extends Timestamped {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @OneToMany(mappedBy = "article")
+    private List<ArticleLike> likes;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
     @Builder
-    public Article(String title, String contents, Member member) {
+    public Article(String title, String contents, Member member, List<ArticleLike> likes,LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.title = title;
         this.contents = contents;
         this.member = member;
+        this.likes = likes;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public void update(String title, String contents) {
+        this.title = title;
+        this.contents = contents;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public Long getLikesCount(){
+        return likes != null ? (long) likes.size() : 0L;
     }
 }

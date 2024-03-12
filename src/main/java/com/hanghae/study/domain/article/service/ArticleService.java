@@ -11,11 +11,11 @@ import com.hanghae.study.domain.member.repository.MemberRepository;
 import com.hanghae.study.global.exception.CustomApiException;
 import com.hanghae.study.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.hanghae.study.domain.article.dto.ArticleRequestDto.CreateArticleRequestDto;
 import static com.hanghae.study.domain.article.dto.ArticleRequestDto.UpdateArticleRequestDto;
@@ -49,12 +49,12 @@ public class ArticleService {
     }
 
     public List<GetArticleResponseDto> getArticles() {
-        List<Article> articleList = articleRepository.findAll();
-
-
-        return articleList.stream().map(article ->
-                GetArticleResponseDto.from(article, (long) article.getLikes().size())
-        ).collect(Collectors.toList());
+        return articleRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt")).stream()
+                .map(article -> {
+                    Long like = articleLikeRepository.countByArticle(article);
+                    return new GetArticleResponseDto(article, like);
+                })
+                .toList();
     }
 
     @Transactional

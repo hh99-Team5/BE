@@ -51,18 +51,6 @@ public class ArticleResponseDto {
                     article.getUpdatedAt()
             );
         }
-
-        public static GetArticleResponseDto from(Article article, Long likes) {
-            return new GetArticleResponseDto(
-                    article.getId(),
-                    article.getMember().getEmail(),
-                    article.getTitle(),
-                    article.getContents(),
-                    likes,
-                    article.getCreatedAt(),
-                    article.getUpdatedAt()
-            );
-        }
     }
 
     public record UpdateArticleResponseDto(

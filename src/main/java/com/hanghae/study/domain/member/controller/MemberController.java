@@ -1,6 +1,7 @@
 package com.hanghae.study.domain.member.controller;
 
 import com.hanghae.study.domain.member.controller.docs.MemberControllerDocs;
+import com.hanghae.study.domain.member.dto.MemberRequestDto.MemberCheckEmailRequestDto;
 import com.hanghae.study.domain.member.dto.MemberRequestDto.MemberSignupRequestDto;
 import com.hanghae.study.domain.member.dto.MemberRequestDto.MemberUpdateRequestDto;
 import com.hanghae.study.domain.member.dto.MemberResponseDto.MemberCheckEmailResponseDto;

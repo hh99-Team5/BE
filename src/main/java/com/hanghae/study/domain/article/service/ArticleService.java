@@ -79,13 +79,16 @@ public class ArticleService {
 
     @Transactional
     public void delete(Long articleId, String email) {
-        Member member = memberRepository.findByEmail(email).orElseThrow(()
-                -> new CustomApiException(ErrorCode.ALREADY_EXIST_EMAIL.getMessage()));
-        Article article = articleRepository.findById(articleId).orElseThrow(()
-                -> new CustomApiException(ErrorCode.NOT_FOUND_ARTICLE.getMessage()));
+        Member member = memberRepository.findByEmail(email).orElseThrow(() ->
+                new CustomApiException(ErrorCode.ALREADY_EXIST_EMAIL.getMessage())
+        );
+        Article article = articleRepository.findById(articleId).orElseThrow(() ->
+                new CustomApiException(ErrorCode.NOT_FOUND_ARTICLE.getMessage())
+        );
         if (article.getMember() != member) {
-            throw new CustomApiException(ErrorCode.NOT_FOUND_MEMBER.getMessage());
+            throw new CustomApiException(ErrorCode.NOT_MATCH_ARTICLE_MEMBER.getMessage());
         }
+
         articleRepository.delete(article);
     }
 }

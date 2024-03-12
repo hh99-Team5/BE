@@ -62,7 +62,6 @@ public class ArticleResponseDto {
             @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
             LocalDateTime createdAt
     ) {
-
         public EditArticleResponseDto(Article article) {
             this(
                     article.getId(),

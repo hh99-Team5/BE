@@ -7,6 +7,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import java.util.List;
 
@@ -14,6 +17,9 @@ import java.util.List;
 @Getter
 @Entity
 @Table(name = "article_tbl")
+@SQLDelete(sql = "UPDATE article_tbl SET deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
+@DynamicUpdate
 public class Article extends Timestamped {
 
     @Id
@@ -26,6 +32,8 @@ public class Article extends Timestamped {
     @Column(nullable = false)
     private String contents;
 
+    private boolean deleted = Boolean.FALSE;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -34,16 +42,20 @@ public class Article extends Timestamped {
     private List<ArticleLike> likes;
 
     @Builder
-    public Article(String title, String contents, Member member) {
+    public Article(String title, String contents, boolean deleted, Member member) {
         this.title = title;
         this.contents = contents;
+        this.deleted = deleted;
         this.member = member;
     }
 
-
     public void update(String title, String contents) {
-        this.title = title;
-        this.contents = contents;
+        if (title != null) {
+            this.title = title;
+        }
+        if (contents != null) {
+            this.contents = contents;
+        }
     }
 
     public Long getLikesCount() {

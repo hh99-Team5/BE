@@ -43,8 +43,9 @@ public class ArticleService {
         Article article = articleRepository.findById(articleId).orElseThrow(
                 () -> new CustomApiException(ErrorCode.NOT_FOUND_ARTICLE.getMessage())
         );
-        Long likes = articleLikeRepository.countByArticle(article);
-        return new GetArticleResponseDto(article, likes);
+
+        Long like = articleLikeRepository.countByArticle(article);
+        return new GetArticleResponseDto(article, like);
     }
 
     public List<GetArticleResponseDto> getArticles() {

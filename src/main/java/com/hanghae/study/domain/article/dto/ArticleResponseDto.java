@@ -12,6 +12,7 @@ public class ArticleResponseDto {
             String writer,
             String title,
             String contents,
+
             @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
             LocalDateTime createdAt
     ) {
@@ -31,16 +32,21 @@ public class ArticleResponseDto {
             String writer,
             String title,
             String contents,
-            Long likes,
-            LocalDateTime createdAt,
-            LocalDateTime modifiedAt) {
+            Long like,
 
-        public GetArticleResponseDto(Article article, Long likes) {
-            this(article.getId(),
+            @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+            LocalDateTime createdAt,
+
+            @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+            LocalDateTime modifiedAt
+    ) {
+        public GetArticleResponseDto(Article article, Long like) {
+            this(
+                    article.getId(),
                     article.getMember().getEmail(),
                     article.getTitle(),
                     article.getContents(),
-                    likes,
+                    like,
                     article.getCreatedAt(),
                     article.getUpdatedAt()
             );

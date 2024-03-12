@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hanghae.study.domain.comment.entity.Comment;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class CommentResponseDto {
 
@@ -42,6 +43,12 @@ public class CommentResponseDto {
                     comment.getCreatedAt(),
                     comment.getUpdatedAt()
             );
+        }
+
+        public static List<GetCommentResponseDto> listOf(List<Comment> comments) {
+            return comments.stream()
+                    .map(GetCommentResponseDto::new)
+                    .toList();
         }
     }
 

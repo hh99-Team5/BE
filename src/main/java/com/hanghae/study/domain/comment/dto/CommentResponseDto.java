@@ -22,4 +22,26 @@ public class CommentResponseDto {
             );
         }
     }
+
+    public record GetCommentResponseDto(
+            Long id,
+            String writer,
+            String contents,
+
+            @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+            LocalDateTime createdAt,
+
+            @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+            LocalDateTime updatedAt
+    ) {
+        public GetCommentResponseDto(Comment comment) {
+            this(
+                    comment.getId(),
+                    comment.getMember().getEmail(),
+                    comment.getContents(),
+                    comment.getCreatedAt(),
+                    comment.getUpdatedAt()
+            );
+        }
+    }
 }

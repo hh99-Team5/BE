@@ -4,6 +4,7 @@ import com.hanghae.study.domain.article.entity.Article;
 import com.hanghae.study.domain.article.repository.ArticleRepository;
 import com.hanghae.study.domain.comment.dto.CommentRequestDto.CreateCommentRequestDto;
 import com.hanghae.study.domain.comment.dto.CommentResponseDto.CreateCommentResponseDto;
+import com.hanghae.study.domain.comment.dto.CommentResponseDto.GetCommentResponseDto;
 import com.hanghae.study.domain.comment.entity.Comment;
 import com.hanghae.study.domain.comment.repository.CommentRepository;
 import com.hanghae.study.domain.member.entity.Member;
@@ -13,6 +14,8 @@ import com.hanghae.study.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -34,5 +37,15 @@ public class CommentService {
 
         Comment comment = commentRepository.save(requestDto.toEntity(member, article));
         return new CreateCommentResponseDto(comment);
+    }
+
+    public List<GetCommentResponseDto> getComments(Long articleId) {
+        Article article = articleRepository.findById(articleId).orElseThrow(() ->
+                new CustomApiException(ErrorCode.NOT_FOUND_ARTICLE.getMessage())
+        );
+
+        return commentRepository.findAllByArticle(article).stream()
+                .map(GetCommentResponseDto::new)
+                .toList();
     }
 }

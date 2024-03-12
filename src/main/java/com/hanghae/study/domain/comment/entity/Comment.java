@@ -5,6 +5,7 @@ import com.hanghae.study.domain.member.entity.Member;
 import com.hanghae.study.global.entity.Timestamped;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,4 +29,11 @@ public class Comment extends Timestamped {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id")
     private Article article;
+
+    @Builder
+    public Comment(String contents, Member member, Article article) {
+        this.contents = contents;
+        this.member = member;
+        this.article = article;
+    }
 }

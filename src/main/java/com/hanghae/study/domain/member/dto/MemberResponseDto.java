@@ -29,4 +29,14 @@ public class MemberResponseDto {
             );
         }
     }
+
+    public record MemberUpdateResponseDto(
+            Long id
+    ) {
+        public MemberUpdateResponseDto(Member member) {
+            this(
+                    member.getId()
+            );
+        }
+    }
 }

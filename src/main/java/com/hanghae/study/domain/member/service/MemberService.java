@@ -1,7 +1,9 @@
 package com.hanghae.study.domain.member.service;
 
 import com.hanghae.study.domain.member.dto.MemberRequestDto.MemberSignupRequestDto;
+import com.hanghae.study.domain.member.dto.MemberRequestDto.MemberUpdateRequestDto;
 import com.hanghae.study.domain.member.dto.MemberResponseDto.MemberSignupResponseDto;
+import com.hanghae.study.domain.member.dto.MemberResponseDto.MemberUpdateResponseDto;
 import com.hanghae.study.domain.member.entity.Member;
 import com.hanghae.study.domain.member.repository.MemberRepository;
 import com.hanghae.study.global.exception.CustomApiException;
@@ -28,5 +30,15 @@ public class MemberService {
         String encodedPassword = passwordEncoder.encode(requestDto.password());
         Member member = memberRepository.save(requestDto.toEntity(encodedPassword));
         return new MemberSignupResponseDto(member);
+    }
+
+    @Transactional
+    public MemberUpdateResponseDto editMember(String email, MemberUpdateRequestDto requestDto) {
+        Member member = memberRepository.findByEmail(email).orElseThrow(() ->
+                new CustomApiException(ErrorCode.NOT_FOUND_MEMBER.getMessage())
+        );
+
+        member.updatePassword(passwordEncoder.encode(requestDto.password()));
+        return new MemberUpdateResponseDto(member);
     }
 }

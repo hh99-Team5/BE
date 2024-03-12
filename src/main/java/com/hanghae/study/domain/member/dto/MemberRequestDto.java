@@ -37,4 +37,12 @@ public class MemberRequestDto {
     ) {
 
     }
+
+    public record MemberUpdateRequestDto(
+            @Schema(description = "비밀번호", example = "password123!")
+            @NotBlank(message = "변경할 비밀번호를 입력해주세요.")
+            String password
+    ) {
+
+    }
 }

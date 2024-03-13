@@ -35,6 +35,7 @@ public class ArticleResponseDto {
             String title,
             String contents,
             Long like,
+            Long commentCount,
 
             @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
             LocalDateTime createdAt,
@@ -51,6 +52,7 @@ public class ArticleResponseDto {
                     article.getTitle(),
                     article.getContents(),
                     like,
+                    (long) article.getComments().size(),
                     article.getCreatedAt(),
                     article.getUpdatedAt(),
                     GetCommentResponseDto.listOf(article.getComments())

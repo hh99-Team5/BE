@@ -103,4 +103,10 @@ public class ArticleResponseDto {
             );
         }
     }
+
+    public record CheckArticleLikeResponseDto(
+            Boolean isChecked
+    ) {
+
+    }
 }

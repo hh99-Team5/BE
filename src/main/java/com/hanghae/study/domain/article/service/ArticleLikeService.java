@@ -1,5 +1,6 @@
 package com.hanghae.study.domain.article.service;
 
+import com.hanghae.study.domain.article.dto.ArticleResponseDto.CheckArticleLikeResponseDto;
 import com.hanghae.study.domain.article.entity.Article;
 import com.hanghae.study.domain.article.entity.ArticleLike;
 import com.hanghae.study.domain.article.repository.ArticleLikeRepository;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 @Service
 public class ArticleLikeService {
 
@@ -36,5 +38,18 @@ public class ArticleLikeService {
                         .member(member)
                         .build())
         );
+    }
+
+    public CheckArticleLikeResponseDto checkLikeArticle(Long articleId, String email) {
+        Member member = memberRepository.findByEmail(email).orElseThrow(() ->
+                new CustomApiException(ErrorCode.NOT_FOUND_MEMBER.getMessage())
+        );
+        Article article = articleRepository.findById(articleId).orElseThrow(() ->
+                new CustomApiException(ErrorCode.NOT_FOUND_ARTICLE.getMessage())
+        );
+
+        return articleLikeRepository.findByArticleAndMember(article, member)
+                .map(articleLike -> new CheckArticleLikeResponseDto(true))
+                .orElse(new CheckArticleLikeResponseDto(false));
     }
 }

@@ -2,6 +2,7 @@ package com.hanghae.study.domain.article.controller;
 
 import com.hanghae.study.domain.article.controller.docs.ArticleControllerDocs;
 import com.hanghae.study.domain.article.dto.ArticleRequestDto;
+import com.hanghae.study.domain.article.dto.ArticleResponseDto.CheckArticleLikeResponseDto;
 import com.hanghae.study.domain.article.dto.ArticleResponseDto.GetArticleResponseDto;
 import com.hanghae.study.domain.article.dto.ArticleResponseDto.SearchArticleResponseDto;
 import com.hanghae.study.domain.article.service.ArticleLikeService;
@@ -88,5 +89,14 @@ public class ArticleController implements ArticleControllerDocs {
     ) {
         List<SearchArticleResponseDto> responseDto = articleService.searchArticles(type, keyword);
         return ResponseDto.success("일지 검색 기능", responseDto);
+    }
+
+    @GetMapping("/{articleId}/likes")
+    public ResponseDto<CheckArticleLikeResponseDto> checkLikeArticle(
+            @PathVariable Long articleId,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        CheckArticleLikeResponseDto responseDto = articleLikeService.checkLikeArticle(articleId, userDetails.getUsername());
+        return ResponseDto.success("일지 좋아요 확인 기능", responseDto);
     }
 }

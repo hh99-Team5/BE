@@ -1,6 +1,7 @@
 package com.hanghae.study.domain.member.controller.docs;
 
 import com.hanghae.study.domain.member.dto.MemberRequestDto;
+import com.hanghae.study.domain.member.dto.MemberResponseDto;
 import com.hanghae.study.domain.member.dto.MemberResponseDto.CheckMemberEmailResponseDto;
 import com.hanghae.study.domain.member.dto.MemberResponseDto.EditMemberResponseDto;
 import com.hanghae.study.domain.member.dto.MemberResponseDto.SignupMemberResponseDto;
@@ -30,5 +31,10 @@ public interface MemberControllerDocs {
     @Operation(summary = "회원 이메일 중복 검사 기능", description = "가입된 회원 이메일을 중복 검사할 수 있는 API")
     ResponseDto<CheckMemberEmailResponseDto> checkEmail(
             @RequestParam String email
+    );
+
+    @Operation(summary = "회원 정보 조회 기능", description = "가입된 회원 정보를 조회할 수 있는 API")
+    ResponseDto<MemberResponseDto.GetMemberResponseDto> getMember(
+            @AuthenticationPrincipal UserDetailsImpl userDetails
     );
 }

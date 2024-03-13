@@ -45,4 +45,20 @@ public class MemberResponseDto {
     ) {
 
     }
+
+    public record GetMemberResponseDto(
+            Long id,
+            String email,
+
+            @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+            LocalDateTime createdAt
+    ) {
+        public GetMemberResponseDto(Member member) {
+            this(
+                    member.getId(),
+                    member.getEmail(),
+                    member.getCreatedAt()
+            );
+        }
+    }
 }

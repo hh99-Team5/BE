@@ -4,6 +4,7 @@ import com.hanghae.study.domain.member.dto.MemberRequestDto.EditMemberRequestDto
 import com.hanghae.study.domain.member.dto.MemberRequestDto.SignupMemberRequestDto;
 import com.hanghae.study.domain.member.dto.MemberResponseDto.CheckMemberEmailResponseDto;
 import com.hanghae.study.domain.member.dto.MemberResponseDto.EditMemberResponseDto;
+import com.hanghae.study.domain.member.dto.MemberResponseDto.GetMemberResponseDto;
 import com.hanghae.study.domain.member.dto.MemberResponseDto.SignupMemberResponseDto;
 import com.hanghae.study.domain.member.entity.Member;
 import com.hanghae.study.domain.member.repository.MemberRepository;
@@ -45,5 +46,12 @@ public class MemberService {
 
     public CheckMemberEmailResponseDto checkEmail(String email) {
         return new CheckMemberEmailResponseDto(memberRepository.existsByEmail(email));
+    }
+
+    public GetMemberResponseDto getMember(String email) {
+        Member member = memberRepository.findByEmail(email).orElseThrow(() ->
+                new CustomApiException(ErrorCode.NOT_FOUND_MEMBER.getMessage())
+        );
+        return new GetMemberResponseDto(member);
     }
 }

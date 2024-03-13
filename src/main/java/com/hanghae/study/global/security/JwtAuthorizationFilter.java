@@ -1,5 +1,7 @@
 package com.hanghae.study.global.security;
 
+import com.hanghae.study.global.exception.CustomJwtException;
+import com.hanghae.study.global.exception.ErrorCode;
 import com.hanghae.study.global.jwt.JwtUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -36,7 +38,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         if (StringUtils.hasText(tokenValue)) {
             if (!jwtUtil.validateToken(tokenValue)) {
                 log.error("Token Error");
-                return;
+                throw new CustomJwtException(ErrorCode.INVALID_JWT_TOKEN.getMessage());
             }
 
             Claims info = jwtUtil.getUserInfoFromToken(tokenValue);

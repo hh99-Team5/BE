@@ -77,4 +77,36 @@ public class ArticleResponseDto {
             );
         }
     }
+
+    public record SearchArticleResponseDto(
+            Long id,
+            String writer,
+            String title,
+            String contents,
+            Long like,
+
+            @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+            LocalDateTime createdAt,
+
+            @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+            LocalDateTime updatedAt
+    ) {
+        public SearchArticleResponseDto(Article article, Long like) {
+            this(
+                    article.getId(),
+                    article.getMember().getEmail(),
+                    article.getTitle(),
+                    article.getContents(),
+                    like,
+                    article.getCreatedAt(),
+                    article.getUpdatedAt()
+            );
+        }
+    }
+
+    public record CheckArticleLikeResponseDto(
+            Boolean isChecked
+    ) {
+
+    }
 }

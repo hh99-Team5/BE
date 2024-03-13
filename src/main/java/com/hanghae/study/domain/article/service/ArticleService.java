@@ -13,6 +13,7 @@ import com.hanghae.study.domain.member.repository.MemberRepository;
 import com.hanghae.study.global.exception.CustomApiException;
 import com.hanghae.study.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,7 +51,16 @@ public class ArticleService {
         return new GetArticleResponseDto(article, like);
     }
 
-    public List<SearchArticleResponseDto> getArticles(String email) {
+    public List<SearchArticleResponseDto> getArticles() {
+        return articleRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt")).stream()
+                .map(article -> {
+                    Long like = articleLikeRepository.countByArticle(article);
+                    return new SearchArticleResponseDto(article, like);
+                })
+                .toList();
+    }
+
+    public List<SearchArticleResponseDto> getMemberArticles(String email) {
         Member member = memberRepository.findByEmail(email).orElseThrow(() ->
                 new CustomApiException(ErrorCode.ALREADY_EXIST_EMAIL.getMessage())
         );

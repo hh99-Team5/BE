@@ -33,9 +33,7 @@ public interface ArticleControllerDocs {
     );
 
     @Operation(summary = "일지 목록 조회 기능", description = "일지 목록을 조회할 수 있는 API")
-    ResponseDto<List<SearchArticleResponseDto>> getArticles(
-            @AuthenticationPrincipal UserDetailsImpl userDetails
-    );
+    ResponseDto<List<SearchArticleResponseDto>> getArticles();
 
     @Operation(summary = "일지 수정 기능", description = "일지를 수정할 수 있는 API")
     ResponseDto<ArticleResponseDto.EditArticleResponseDto> editArticle(

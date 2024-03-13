@@ -1,5 +1,6 @@
 package com.hanghae.study.domain.member.controller.docs;
 
+import com.hanghae.study.domain.article.dto.ArticleResponseDto;
 import com.hanghae.study.domain.member.dto.MemberRequestDto;
 import com.hanghae.study.domain.member.dto.MemberResponseDto;
 import com.hanghae.study.domain.member.dto.MemberResponseDto.CheckMemberEmailResponseDto;
@@ -13,6 +14,8 @@ import jakarta.validation.Valid;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @Tag(name = "members", description = "회원 관련 API")
 public interface MemberControllerDocs {
@@ -35,6 +38,11 @@ public interface MemberControllerDocs {
 
     @Operation(summary = "회원 정보 조회 기능", description = "가입된 회원 정보를 조회할 수 있는 API")
     ResponseDto<MemberResponseDto.GetMemberResponseDto> getMember(
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    );
+
+    @Operation(summary = "회원 작성 일지 목록 조회 기능", description = "가입된 회원이 작성한 일지를 조회할 수 있는 API")
+    ResponseDto<List<ArticleResponseDto.SearchArticleResponseDto>> getMemberArticles(
             @AuthenticationPrincipal UserDetailsImpl userDetails
     );
 }

@@ -1,5 +1,7 @@
 package com.hanghae.study.domain.member.controller;
 
+import com.hanghae.study.domain.article.dto.ArticleResponseDto.SearchArticleResponseDto;
+import com.hanghae.study.domain.article.service.ArticleService;
 import com.hanghae.study.domain.member.controller.docs.MemberControllerDocs;
 import com.hanghae.study.domain.member.dto.MemberRequestDto;
 import com.hanghae.study.domain.member.dto.MemberResponseDto.CheckMemberEmailResponseDto;
@@ -15,12 +17,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/members")
 @RestController
 public class MemberController implements MemberControllerDocs {
 
     private final MemberService memberService;
+    private final ArticleService articleService;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/signup")
@@ -54,5 +59,13 @@ public class MemberController implements MemberControllerDocs {
     ) {
         GetMemberResponseDto responseDto = memberService.getMember(userDetails.getUsername());
         return ResponseDto.success("회원 정보 조회 기능", responseDto);
+    }
+
+    @GetMapping("/articles")
+    public ResponseDto<List<SearchArticleResponseDto>> getMemberArticles(
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        List<SearchArticleResponseDto> responseDto = articleService.getMemberArticles(userDetails.getUsername());
+        return ResponseDto.success("회원 작성 일지 목록 조회 기능", responseDto);
     }
 }

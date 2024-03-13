@@ -47,8 +47,10 @@ public class ArticleController implements ArticleControllerDocs {
     }
 
     @GetMapping
-    public ResponseDto<List<SearchArticleResponseDto>> getArticles() {
-        List<SearchArticleResponseDto> responseDto = articleService.getArticles();
+    public ResponseDto<List<SearchArticleResponseDto>> getArticles(
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        List<SearchArticleResponseDto> responseDto = articleService.getArticles(userDetails.getUsername());
         return ResponseDto.success("일지 목록 조회 기능", responseDto);
     }
 

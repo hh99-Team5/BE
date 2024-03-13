@@ -59,4 +59,10 @@ public interface ArticleControllerDocs {
             @RequestParam(defaultValue = "title") String type,
             @RequestParam String keyword
     );
+
+    @Operation(summary = "일지 좋아요 확인 기능", description = "일지 좋아요를 확인할 수 있는 API")
+    ResponseDto<ArticleResponseDto.CheckArticleLikeResponseDto> checkLikeArticle(
+            @PathVariable Long articleId,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    );
 }

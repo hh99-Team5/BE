@@ -3,6 +3,7 @@ package com.hanghae.study.domain.article.controller;
 import com.hanghae.study.domain.article.controller.docs.ArticleControllerDocs;
 import com.hanghae.study.domain.article.dto.ArticleRequestDto;
 import com.hanghae.study.domain.article.dto.ArticleResponseDto.GetArticleResponseDto;
+import com.hanghae.study.domain.article.dto.ArticleResponseDto.SearchArticleResponseDto;
 import com.hanghae.study.domain.article.service.ArticleLikeService;
 import com.hanghae.study.domain.article.service.ArticleService;
 import com.hanghae.study.global.dto.ResponseDto;
@@ -45,11 +46,10 @@ public class ArticleController implements ArticleControllerDocs {
     }
 
     @GetMapping
-    public ResponseDto<List<GetArticleResponseDto>> getArticles() {
-        List<GetArticleResponseDto> responseDto = articleService.getArticles();
+    public ResponseDto<List<SearchArticleResponseDto>> getArticles() {
+        List<SearchArticleResponseDto> responseDto = articleService.getArticles();
         return ResponseDto.success("일지 목록 조회 기능", responseDto);
     }
-
 
     @PutMapping("/{articleId}")
     public ResponseDto<EditArticleResponseDto> editArticle(
@@ -79,5 +79,14 @@ public class ArticleController implements ArticleControllerDocs {
     ) {
         articleLikeService.switchingLike(articleId, userDetails.getUsername());
         return ResponseDto.success("일지 좋아요 기능", null);
+    }
+
+    @GetMapping("/search")
+    public ResponseDto<List<SearchArticleResponseDto>> searchArticles(
+            @RequestParam(defaultValue = "title") String type,
+            @RequestParam String keyword
+    ) {
+        List<SearchArticleResponseDto> responseDto = articleService.searchArticles(type, keyword);
+        return ResponseDto.success("일지 검색 기능", responseDto);
     }
 }

@@ -5,6 +5,7 @@ import com.hanghae.study.domain.article.dto.ArticleRequestDto.CreateArticleReque
 import com.hanghae.study.domain.article.dto.ArticleResponseDto;
 import com.hanghae.study.domain.article.dto.ArticleResponseDto.CreateArticleResponseDto;
 import com.hanghae.study.domain.article.dto.ArticleResponseDto.GetArticleResponseDto;
+import com.hanghae.study.domain.article.dto.ArticleResponseDto.SearchArticleResponseDto;
 import com.hanghae.study.global.dto.ResponseDto;
 import com.hanghae.study.global.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,6 +14,7 @@ import jakarta.validation.Valid;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -31,7 +33,7 @@ public interface ArticleControllerDocs {
     );
 
     @Operation(summary = "일지 목록 조회 기능", description = "일지 목록을 조회할 수 있는 API")
-    ResponseDto<List<GetArticleResponseDto>> getArticles();
+    ResponseDto<List<SearchArticleResponseDto>> getArticles();
 
     @Operation(summary = "일지 수정 기능", description = "일지를 수정할 수 있는 API")
     ResponseDto<ArticleResponseDto.EditArticleResponseDto> editArticle(
@@ -50,5 +52,11 @@ public interface ArticleControllerDocs {
     ResponseDto<Void> switchingArticleLike(
             @PathVariable Long articleId,
             @AuthenticationPrincipal UserDetailsImpl userDetails
+    );
+
+    @Operation(summary = "일지 검색 기능", description = "일지를 검색할 수 있는 API")
+    ResponseDto<List<SearchArticleResponseDto>> searchArticles(
+            @RequestParam(defaultValue = "title") String type,
+            @RequestParam String keyword
     );
 }

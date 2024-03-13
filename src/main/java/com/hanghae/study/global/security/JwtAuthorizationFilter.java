@@ -1,14 +1,14 @@
 package com.hanghae.study.global.security;
 
-import com.hanghae.study.global.exception.CustomJwtException;
-import com.hanghae.study.global.exception.ErrorCode;
 import com.hanghae.study.global.jwt.JwtUtil;
+import com.hanghae.study.global.util.CustomResponseUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -38,7 +38,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         if (StringUtils.hasText(tokenValue)) {
             if (!jwtUtil.validateToken(tokenValue)) {
                 log.error("Token Error");
-                throw new CustomJwtException(ErrorCode.INVALID_JWT_TOKEN.getMessage());
+                CustomResponseUtil.fail(response, "JWT 유효성 검사 실패", HttpStatus.UNAUTHORIZED);
+                return;
             }
 
             Claims info = jwtUtil.getUserInfoFromToken(tokenValue);

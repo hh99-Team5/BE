@@ -27,13 +27,6 @@ public class CustomExceptionHandler {
         return ResponseDto.fail(e.getMessage());
     }
 
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler(CustomJwtException.class)
-    public ResponseDto<?> handleCustomJwtException(CustomJwtException e) {
-        log.error("handleCustomJwtException", e);
-        return ResponseDto.fail("JWT 유효성 검사 실패", e.getMessage());
-    }
-
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseDto<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {

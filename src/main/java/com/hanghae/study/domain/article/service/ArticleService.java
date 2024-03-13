@@ -3,9 +3,11 @@ package com.hanghae.study.domain.article.service;
 import com.hanghae.study.domain.article.dto.ArticleResponseDto.CreateArticleResponseDto;
 import com.hanghae.study.domain.article.dto.ArticleResponseDto.EditArticleResponseDto;
 import com.hanghae.study.domain.article.dto.ArticleResponseDto.GetArticleResponseDto;
+import com.hanghae.study.domain.article.dto.ArticleResponseDto.SearchArticleResponseDto;
 import com.hanghae.study.domain.article.entity.Article;
 import com.hanghae.study.domain.article.repository.ArticleLikeRepository;
 import com.hanghae.study.domain.article.repository.ArticleRepository;
+import com.hanghae.study.domain.article.repository.ArticleSearchRepository;
 import com.hanghae.study.domain.member.entity.Member;
 import com.hanghae.study.domain.member.repository.MemberRepository;
 import com.hanghae.study.global.exception.CustomApiException;
@@ -27,6 +29,7 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
     private final ArticleLikeRepository articleLikeRepository;
+    private final ArticleSearchRepository articleSearchRepository;
     private final MemberRepository memberRepository;
 
     @Transactional
@@ -48,11 +51,11 @@ public class ArticleService {
         return new GetArticleResponseDto(article, like);
     }
 
-    public List<GetArticleResponseDto> getArticles() {
+    public List<SearchArticleResponseDto> getArticles() {
         return articleRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt")).stream()
                 .map(article -> {
                     Long like = articleLikeRepository.countByArticle(article);
-                    return new GetArticleResponseDto(article, like);
+                    return new SearchArticleResponseDto(article, like);
                 })
                 .toList();
     }
@@ -86,5 +89,16 @@ public class ArticleService {
         }
 
         articleRepository.delete(article);
+    }
+
+    @Transactional(readOnly = true)
+    public List<SearchArticleResponseDto> searchArticles(String type, String keyword) {
+        return articleSearchRepository.searchArticle(type, keyword).stream()
+                .map(article -> {
+                    Long like = articleLikeRepository.countByArticle(article);
+                    return new SearchArticleResponseDto(article, like);
+                })
+                .toList();
+
     }
 }

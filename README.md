@@ -84,4 +84,9 @@ erDiagram
 ## 📄 API 명세서
 
 URL: http://hanghae-5.ap-northeast-2.elasticbeanstalk.com/swagger-ui/index.html
+
 <img width="721" alt="스크린샷 2024-03-14 오전 10 37 38" src="https://github.com/hh99-Team5/Study_diary_BE/assets/150704638/3c4dea9f-8c84-4cff-ac6d-aaf0df409514">
+
+## 📐 시스템 아키텍처
+
+![Blank diagram - Page 1 (11)](https://github.com/hh99-Team5/Study_diary_BE/assets/150704638/2c471bdc-9b42-48b0-9fdb-eb09e9d26c60)
